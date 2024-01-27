@@ -1,4 +1,6 @@
 ﻿using SchoolSchedule.Services;
+using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("Hello, World!");
@@ -9,17 +11,17 @@ Console.WriteLine("Hello, World!");
 // Вывод
 // 1.: история, к310, Бучнева Мария Андреевна
 
-string s = "27.01";
 
+var str = Console.ReadLine();
 try
 {
-    var result = DateUtils.ParseStringToWeekDay(s);
-    Console.WriteLine(result.ToString());
+    var query = IOService.ParseInputString(str);
+
+    Console.WriteLine(query.GradeNumber + " " + query.GradeLatter + " " + query.DayOfWeek.ToString());
+
 }
 catch (Exception e)
 {
 
     Console.WriteLine(e.Message);
 }
-
-
