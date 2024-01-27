@@ -1,27 +1,25 @@
-﻿using SchoolSchedule.Services;
-using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
+﻿using SchoolSchedule.Repository;
+using SchoolSchedule.Services;
+using Telegram.Bot.Polling;
+using Telegram.Bot;
+using Telegram.Bot.Types;
+using Telegram.Bot.Exceptions;
+using SchoolSchedule;
 
-// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+var factory = Factory.GetInstance();
 
-// 10 Х 10.11(вывод расписание на 10.11)
-// 10 Х Вторник
-// 10 Х (вывод расписания на сегодняшний день)
-// Вывод
-// 1.: история, к310, Бучнева Мария Андреевна
+Console.WriteLine("Запущен бот " + factory.Bot.GetMeAsync().Result.FirstName);
 
-
-var str = Console.ReadLine();
-try
+var cts = new CancellationTokenSource();
+var cancellationToken = cts.Token;
+var receiverOptions = new ReceiverOptions
 {
-    var query = IOService.ParseInputString(str);
-
-    Console.WriteLine(query.GradeNumber + " " + query.GradeLatter + " " + query.DayOfWeek.ToString());
-
-}
-catch (Exception e)
-{
-
-    Console.WriteLine(e.Message);
-}
+    AllowedUpdates = { }, // receive all update types
+};
+factory.Bot.StartReceiving(
+    factory.TGService.HandleUpdateAsync,
+    factory.TGService.HandleErrorAsync,
+    receiverOptions,
+    cancellationToken
+);
+Console.ReadLine();
