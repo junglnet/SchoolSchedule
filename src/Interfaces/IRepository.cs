@@ -2,9 +2,9 @@
 
 namespace SchoolSchedule.Interfaces
 {
-    internal interface IRepository<T>
+    internal interface IRepository<TEntity, TFilter>
     {
-        Task<IEnumerable<T>> GetByQueryAsync(Query query, CancellationToken token = default);
+        Task<IEnumerable<TEntity>> GetByQueryAsync(TFilter filter, CancellationToken token = default);
 
     }
 }

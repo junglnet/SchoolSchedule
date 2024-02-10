@@ -16,7 +16,8 @@ namespace SchoolSchedule.Services
             + Environment.NewLine + "Пример доступных команд:" 
             + Environment.NewLine + "10 Ю 10.11" 
             + Environment.NewLine + "10 Ю 10.11.24"
-            + Environment.NewLine + "10 Ю Вторник";
+            + Environment.NewLine + "10 Ю Вторник"
+            + Environment.NewLine + "10 Ю";
 
         private readonly ScheduleService _scheduleService;
 
@@ -41,8 +42,20 @@ namespace SchoolSchedule.Services
 
                 try
                 {
-                    var query = IOService.ParseInputString(message.Text.ToLower());
-                    var response = await _scheduleService.GetScheldueString(query);                    
+                    var schelduleFilter = IOService.ParseInputStringToSchelduleFilter(message.Text.ToLower());
+                    var response = await _scheduleService.GetScheldueString(schelduleFilter, cancellationToken);
+
+                    if (response == string.Empty)
+                    {
+                        var teacherFilter = IOService.ParseInputStringToTeacherFilter(message.Text.ToLower());
+                        response = await _scheduleService.GetTeacherName(teacherFilter, cancellationToken);
+                    }                    
+
+                    if (response == string.Empty)
+                    {
+                        response = "Формат введенной строки неверный!";
+                    }
+
                     await botClient.SendTextMessageAsync(message.Chat, response);
 
                 }

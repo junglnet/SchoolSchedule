@@ -56,18 +56,34 @@ namespace SchoolSchedule.Services
             };
         }
 
+        public static int GetWeekDayNumber(DayOfWeek dayOfWeek)
+        {
+
+            return dayOfWeek switch
+            {
+                DayOfWeek.Monday => 1,
+                DayOfWeek.Tuesday => 2,
+                DayOfWeek.Wednesday => 3,
+                DayOfWeek.Thursday => 4,
+                DayOfWeek.Friday => 5,
+                DayOfWeek.Saturday => 6,
+                DayOfWeek.Sunday => 7,
+                _ => throw new Exception("Такой день недели не найден"),
+            };
+        }
+
         public static string GetWeekDayRusName(int weekDayNum)
         {
 
             return weekDayNum switch
             {
-                2 => "Понедельник",
-                3 => "Вторник",
-                4 => "Среда",
-                5 => "Четверг",
-                6 => "Пятница",
-                7 => "Суббота",
-                0 => "Воскресение",
+                1 => "Понедельник",
+                2 => "Вторник",
+                3 => "Среда",
+                4 => "Четверг",
+                5 => "Пятница",
+                6 => "Суббота",
+                7 => "Воскресение",
                 _ => throw new Exception("Такой день недели не найден"),
             };
         }
