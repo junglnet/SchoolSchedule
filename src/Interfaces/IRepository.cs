@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SchoolSchedule.Entities;
 
 namespace SchoolSchedule.Interfaces
 {
-    internal interface IRepository<T>
+    internal interface IRepository<TEntity, TFilter>
     {
-        Task<IEnumerable<T>> GetAllAsync(CancellationToken token = default);
-        Task<T> GetByIdAsync(string id, CancellationToken token = default);
-        Task<IEnumerable<T>> GetByIdsAsync(string[] ids, CancellationToken token = default);
-
-        Task<bool> IsExistById(string id, CancellationToken token = default);
+        Task<IEnumerable<TEntity>> GetByQueryAsync(TFilter filter, CancellationToken token = default);
 
     }
 }

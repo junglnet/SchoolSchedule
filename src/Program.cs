@@ -1,25 +1,31 @@
-﻿using SchoolSchedule.Services;
-
-// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
-
-// 10 Х 10.11(вывод расписание на 10.11)
-// 10 Х Вторник
-// 10 Х (вывод расписания на сегодняшний день)
-// Вывод
-// 1.: история, к310, Бучнева Мария Андреевна
-
-string s = "27.01";
+﻿using Telegram.Bot.Polling;
+using Telegram.Bot;
+using Telegram.Bot.Types;
+using Telegram.Bot.Exceptions;
+using SchoolSchedule;
 
 try
 {
-    var result = DateUtils.ParseStringToWeekDay(s);
-    Console.WriteLine(result.ToString());
+    var factory = Factory.GetInstance();
+    Console.WriteLine("Запущен бот " + factory.Bot.GetMeAsync().Result.FirstName);
+
+    var cts = new CancellationTokenSource();
+    var cancellationToken = cts.Token;
+    var receiverOptions = new ReceiverOptions
+    {
+        AllowedUpdates = { },
+    };
+    factory.Bot.StartReceiving(
+        factory.TGService.HandleUpdateAsync,
+        factory.TGService.HandleErrorAsync,
+        receiverOptions,
+        cancellationToken
+    );
 }
-catch (Exception e)
+catch (Exception ex)
 {
-
-    Console.WriteLine(e.Message);
+    Console.WriteLine( ex.ToString() );
 }
 
 
+Console.ReadLine();
